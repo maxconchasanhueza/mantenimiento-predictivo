@@ -60,6 +60,25 @@ que un umbral.
 3. Ejecutar `notebooks/01_eda.ipynb` y luego `notebooks/02_modelos.ipynb`.
 
 
+## API y Docker
+
+Entrenar el modelo (genera `models/xgb_rul.json`):
+
+    python -m src.train
+
+Construir y ejecutar la API en contenedor:
+
+    docker build -t rul-api .
+    docker run -p 8000:8000 rul-api
+
+Documentación interactiva en `http://127.0.0.1:8000/docs`. Rutas: `GET /health`
+y `POST /predict` (17 variables de entrada, devuelve la RUL estimada en ciclos).
+La API rechaza con error 422 entradas incompletas o con tipos incorrectos.
+
+Verificación de ejemplo: motor 34 del test (RUL real 7), estimada 6,6. Es un
+caso extremo elegido para comprobar el servicio; las métricas del proyecto son
+las de la tabla de resultados.
+
 ## Próximos pasos
 
-API con FastAPI, contenedor Docker y despliegue.
+Despliegue en la nube y pruebas automáticas.
